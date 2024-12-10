@@ -4,7 +4,7 @@
   "main": "index.js",
  "scripts": {
   "start": "node server/server.js",
-  "build": "npm install"
+  "build": "echo 'No build required for this Node.js project'"
 },
 
   "keywords": [],
