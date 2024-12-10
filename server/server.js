@@ -232,56 +232,60 @@ const PORT = 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 app.post("/process-emails", async (req, res) => {
-  try {
-    // Extract emails and validate the data
-    const { emails = [] } = req.body;
-
-    if (!Array.isArray(emails)) {
-      console.error("Invalid emails data:", emails);
-      return res.status(400).send("Invalid email data");
-    }
-
-    const addedEvents = [];
-    const failedEvents = [];
-
-    // Initialize Google Calendar API
-    const { google } = require("googleapis");
-    const authClient = new google.auth.OAuth2();
-    authClient.setCredentials({ access_token: req.user.accessToken });
-
-    const calendar = google.calendar({ version: "v3", auth: authClient });
-
-    // Iterate over emails to add events to the calendar
-    for (const email of emails) {
-      if (!email.date || !email.subject) {
-        console.log(`Skipping invalid email:`, email);
-        continue;
+    try {
+         // Log the received emails payload
+    console.log("Received emails payload:", req.body.emails);
+    
+      // Parse incoming email data
+      const emails = JSON.parse(req.body.emails || "[]");
+  
+      if (!Array.isArray(emails) || emails.length === 0) {
+        console.error("Invalid or empty emails data:", emails);
+        return res.status(400).send("Invalid email data.");
       }
-
-      try {
-        await calendar.events.insert({
-          calendarId: "primary",
-          resource: {
-            summary: email.subject,
-            start: { date: email.date },
-            end: { date: email.date }, // Single-day events
-          },
-        });
-        console.log(`Added event: ${email.subject}`);
-        addedEvents.push(email.subject);
-      } catch (error) {
-        console.error(`Failed to add event for: ${email.subject}`, error);
-        failedEvents.push(email.subject);
+  
+      const addedEvents = [];
+      const failedEvents = [];
+  
+      // Initialize Google Calendar API
+      const { google } = require("googleapis");
+      const authClient = new google.auth.OAuth2();
+      authClient.setCredentials({ access_token: req.user.accessToken });
+  
+      const calendar = google.calendar({ version: "v3", auth: authClient });
+  
+      // Iterate over emails to add events to the calendar
+      for (const email of emails) {
+        if (!email.date || !email.subject) {
+          console.log(`Skipping invalid email:`, email);
+          continue;
+        }
+  
+        try {
+          await calendar.events.insert({
+            calendarId: "primary",
+            resource: {
+              summary: email.subject,
+              start: { date: email.date },
+              end: { date: email.date }, // Single-day events
+            },
+          });
+          console.log(`Added event: ${email.subject}`);
+          addedEvents.push(email.subject);
+        } catch (error) {
+          console.error(`Failed to add event for: ${email.subject}`, error);
+          failedEvents.push(email.subject);
+        }
       }
+  
+      console.log("Added events:", addedEvents);
+      console.log("Failed events:", failedEvents);
+  
+      // Redirect back to dashboard or handle differently as needed
+      return res.redirect("/dashboard");
+    } catch (error) {
+      console.error("Error processing emails:", error);
+      res.status(500).send("An error occurred while processing emails.");
     }
-
-    console.log("Added events:", addedEvents);
-    console.log("Failed events:", failedEvents);
-
-    // Redirect to Google Calendar
-    return res.redirect("https://calendar.google.com/calendar/");
-  } catch (error) {
-    console.error("Error processing emails:", error);
-    res.status(500).send("An error occurred while processing emails.");
-  }
-});
+  });
+  
