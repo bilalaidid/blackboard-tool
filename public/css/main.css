@@ -1,0 +1,93 @@
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Home Page */
+.home-page {
+  text-align: center;
+  background-color: #f8f9fa;
+}
+
+.header-logo {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.cta-section {
+  margin: 50px auto;
+  text-align: center;
+}
+
+.cta-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.cta-text {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.btn-google {
+  display: inline-block;
+}
+
+.btn-google img {
+  width: 200px;
+}
+
+/* Dashboard Page */
+.dashboard-page {
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-logout img {
+  width: 40px;
+}
+
+.reminders-section {
+  margin-top: 30px;
+}
+
+.reminders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.reminders-table th,
+.reminders-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.reminders-table th {
+  background-color: #f4f4f4;
+}
+
+.btn-add-calendar {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-add-calendar:hover {
+  background-color: #0056b3;
+}

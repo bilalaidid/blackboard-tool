@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blackboard Scrapper</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <header class="bg-white">
+      <nav class="flex items-center justify-between px-6 py-4">
+        <div class="flex items-center space-x-4">
+          <img src="/images/frame-37.png" alt="Blackboard Scrapper Logo" class="w-64 h-auto" />
+        </div>
+        <div>
+          <a href="/logout">
+            <img
+              src="/images/logout.png"
+              alt="Logout Icon"
+              class="w-32 h-auto"
+            />
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="max-w-6xl mx-auto mt-8 p-4 bg-white rounded shadow">
+      <section class="mb-8">
+        <div class=" text-left"> 
+        <img
+          src="/images/recent-reminders.png"
+          alt="Recent Reminders"
+          class="mx-auto mb-4"
+        />
+    </div>
+      </section>
+
+      <section>
+        <table
+          class="min-w-full table-auto border-collapse border border-gray-300"
+        >
+          <thead>
+            <tr class="bg-gray-100 text-gray-700">
+              <th
+                class="border border-gray-300 px-4 py-2 text-left font-medium"
+              >
+                Date
+              </th>
+              <th
+                class="border border-gray-300 px-4 py-2 text-left font-medium"
+              >
+                Subject
+              </th>
+              <th
+                class="border border-gray-300 px-4 py-2 text-left font-medium"
+              >
+                Labels
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% emails.forEach((email, index) => { %>
+            <tr class="<%= index % 2 === 0 ? 'bg-gray-50' : 'bg-white' %>">
+              <td class="border border-gray-300 px-4 py-2">
+                <%= email.date %>
+              </td>
+              <td class="border border-gray-300 px-4 py-2">
+                <%= email.subject %>
+              </td>
+              <td class="border border-gray-300 px-4 py-2">
+                <% email.labels
+                  .filter((label) => !['PERSONAL', 'INBOX'].includes(label))
+                  .forEach((label) => {
+                    var labelClasses = {
+                      Assignment: 'bg-green-100 text-green-800',
+                      Reflection: 'bg-blue-100 text-blue-800',
+                      Quiz: 'bg-purple-100 text-purple-800',
+                      Project: 'bg-yellow-100 text-yellow-800',
+                      FeedBack: 'bg-pink-100 text-pink-800',
+                    };
+                    var labelClass =
+                      labelClasses[label] || 'bg-gray-100 text-gray-800'; %>
+                <span
+                  class="inline-block rounded-full px-2 py-1 text-xs font-semibold mr-2 <%= labelClass %>"
+                >
+                  <%= label %>
+                </span>
+                <% }); %>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+    </section>
+
+    <!-- Never Miss a Deadline Card -->
+    <section class="mt-12"> <!-- Increased margin -->
+      
+      </section>
+      <div class="bg-white rounded shadow p-6 flex items-center justify-between">
+
+          <div class="flex items-center">
+            <img
+              src="/images/calendar-icon.png"
+              alt="Calendar Icon"
+              class="w-12 h-12 mr-4"
+            />
+            <div>
+              <h2 class="text-lg font-semibold">Never Miss a Deadline Again</h2>
+              <p class="text-gray-600">
+                Stay on top of your assignments by seamlessly adding your Blackboard
+                tasks to your calendar. Take control of your schedule and avoid
+                last-minute stress!
+              </p>
+            </div>
+          </div>
+          <form action="/process-emails" method="POST">
+            <button
+              type="submit"
+              class="bg-black hover:bg-gray-800 text-white font-medium py-3 px-12 rounded-full"
+            >
+              Add to calendar
+            </button>
+          </form>
+        </div>
+    </main>
+  </body>
+</html>
