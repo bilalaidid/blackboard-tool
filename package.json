@@ -2,7 +2,7 @@
   "name": "blackboard-tool",
   "version": "1.0.0",
   "main": "index.js",
- "scripts": {
+"scripts": {
   "start": "node server/server.js",
   "build": "echo 'No build required for this Node.js project'"
 },
